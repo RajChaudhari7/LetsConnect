@@ -6,3 +6,6 @@
 
 }
 
+.no-scroll ::-webkit-scrollbar{
+  display: none;
+}

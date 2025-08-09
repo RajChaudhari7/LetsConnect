@@ -35,7 +35,8 @@ export const addUserStory = async (req, res) => {
 
         await inngest.send({
             name: 'app/story.delete',
-            data: { storyId: story._id }
+            data: { storyId: story._id },
+            timestamp: Math.floor(Date.now() / 1000) + 86400,
         })
 
         res.json({ success: true })

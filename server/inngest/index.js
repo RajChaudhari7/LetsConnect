@@ -115,20 +115,27 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
     }
 )
 
-// inggest function to delete story after 24 hours
 const deleteStory = inngest.createFunction(
-    { id: 'story-delete' },
+    { id: 'delete-story', name: 'Delete Story' },
     { event: 'app/story.delete' },
-    async (event, step) => {
+    async ({ event, step }) => {
         const { storyId } = event.data;
-        const in24Hours = new Date(Date.now() + 24 * 60 * 60 * 1000)
-        await step.sleepUntil('wait-for-24-hours', in24Hours)
+
+        // Calculate the time 24 hours from now
+        const twentyFourHoursLater = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        // Sleep until the calculated time
+        await step.sleepUntil('wait-24-hours', twentyFourHoursLater);
+
+        // Delete the story
         await step.run('delete-story', async () => {
-            await Story.findByIdAndDelete(storyId)
-            return { message: "Story deleted" }
-        })
+            await Story.findByIdAndDelete(storyId);
+            console.log(`Story ${storyId} deleted successfully.`);
+        });
+
+        return { message: "Story deletion process completed" };
     }
-)
+);
 
 // inngest function to send notification for unseen messages
 const sendNotificationOfUnseenMessages = inngest.createFunction(
@@ -166,7 +173,7 @@ const sendNotificationOfUnseenMessages = inngest.createFunction(
             })
         }
 
-        return {message : "Notification Send"}
+        return { message: "Notification Send" }
     }
 )
 

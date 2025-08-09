@@ -52,7 +52,7 @@ const App = () => {
       eventSource.onmessage = (event) => {
         const message = JSON.parse(event.data)
 
-        if (pathnameRef.current === ('/message/' + message.from_user_id._id)) {
+        if (pathnameRef.current === ('/messages/' + message.from_user_id._id)) {
           dispatch(addMessage(message))
         } else {
           toast.custom((t) => (

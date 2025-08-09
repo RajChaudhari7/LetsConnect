@@ -20,7 +20,7 @@ const Notification = ({ t, message }) => {
                 </div>
             </div>
 
-            <div>
+            <div className='flex border-l border-gray-200'>
                 <button className='p-4 text-indigo-600 font-semibold' onClick={() => {
                     navigate(`/messages/${message.from_user_id._id}`);
                     toast.dismiss(t.id)
